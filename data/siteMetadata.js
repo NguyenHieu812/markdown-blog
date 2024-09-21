@@ -3,8 +3,8 @@ const siteMetadata = {
   title: 'DevTalk Blog',
   author: 'Hieu Nguyen',
   headerTitle: 'DevTalk',
-  description: 'A blog created with Next.js and Tailwind.css',
-  language: 'en-us',
+  description: 'Một blog nhỏ của cậu bé fullstack developer',
+  language: 'vi-VN',
   theme: 'system', // system, dark or light
   siteUrl: 'https://www.devtalk.online/',
   siteRepo: 'https://github.com/NguyenHieu812/markdown-blog.git',
@@ -12,7 +12,7 @@ const siteMetadata = {
   socialBanner: `${process.env.BASE_PATH || ''}/static/images/twitter-card.png`,
   mastodon: 'https://mastodon.social/@mastodonuser',
   email: 'tronghieu12802@gmail.com',
-  github: 'https://github.com',
+  github: 'https://github.com/NguyenHieu812',
   x: 'https://twitter.com/x',
   // twitter: 'https://twitter.com/Twitter',
   facebook: 'https://facebook.com',
@@ -20,7 +20,7 @@ const siteMetadata = {
   linkedin: 'https://www.linkedin.com',
   threads: 'https://www.threads.net',
   instagram: 'https://www.instagram.com',
-  locale: 'en-US',
+  locale: 'vi-VN',
   // set to true if you want a navbar fixed to the top
   stickyNav: false,
   analytics: {
@@ -79,7 +79,7 @@ const siteMetadata = {
       // example: https://giscus.app/themes/custom_example.css
       themeURL: '',
       // This corresponds to the `data-lang="en"` in giscus's configurations
-      lang: 'en',
+      lang: 'vi',
     },
   },
   search: {
