@@ -1,0 +1,52 @@
+---
+title: 'Directus tương lai mới cho Headless CMS'
+date: '2024-10-02'
+lastmod: '2024-10-02'
+tags: ['directus', 'guide', 'feature', 'back-end']
+draft: false
+summary: Directus là một Headless CMS mã nguồn mở, cung cấp một giao diện quản trị dễ sử dụng và một API mạnh mẽ cho việc quản lý nội dung. Bài viết này sẽ giới thiệu về Directus và những tính năng của nó.
+---
+
+## Introduction
+
+Chào mừng bạn đến với blog của mình, hôm nay mình sẽ giới thiệu với mọi người về Directus - một Headless CMS mã nguồn mở. Directus cung cấp một giao diện quản trị dễ sử dụng và một API mạnh mẽ cho việc quản lý nội dung. Bài viết này sẽ giới thiệu về Directus và những tính năng của nó.
+
+## Directus là gì?
+
+Directus là một Headless CMS mã nguồn mở, được phát triển bởi [RANGER Studio](https://rangerstudio.com/). Directus cung cấp một giao diện quản trị dễ sử dụng và một API mạnh mẽ không những cho việc quản lý nội dung như blog mà còn giúp các nhà phát triển phần mềm thuận tiện hơn trong việc tạo, quản lý mã nguồn back-end một cách đơn giản.
+
+[![IMAGE ALT TEXT
+HERE](https://i.ytimg.com/an_webp/viURaw3oiBA/mqdefault_6s.webp?du=3000&sqp=CKCV9bcG&rs=AOn4CLDyJalUse3EeU19iuH4EiC_rcBzjA)](https://youtu.be/viURaw3oiBA?si=MqpdvRhA7WF58GS3)
+Với Directus, bạn có thể sử dụng các API/SDK có sẵn để thao tác với server mà không cần phải viết
+lại các thao tác đó bằng tay (trừ khi bạn muốn custom hoặc tạo extension).
+
+## Cài đặt Directus
+
+Nếu bạn muốn cài đặt Directus, bạn có thể tham khảo hướng dẫn trên trang chính thức của Directus [tại đây](https://docs.directus.io/getting-started/installation.html).
+
+Bạn có thể chọn tạo dự án Directus bằng các công cụ như Directus Cloud - Docker installation - NPM Installation
+
+Nhưng nếu bạn mới bắt đầu và muốn thử nghiệm thì bạn hoàn toàn nên sử dùng Self-hosted của Directus để phát triển cùng các công nghệ Front-end như ReactJS, NextJS, Gatsby, VueJS, NuxtJS, Angular, Svelte, ... Tham khảo hướng dẫn cấu hình Self-hosted của Directus [tại đây](https://docs.directus.io/self-hosted/quickstart.html). Lưu ý, bạn cần có một chút kiến thức cơ bản về Docker, NodeJS và một số kiến thức về cấu hình server.
+
+## Tính năng của Directus
+
+Ví dụ về một số tính năng của Directus:
+Ở đây mình có một ví dụ đơn giản về việc sử dụng Directus SDK để gửi request get items từ một collection trong Directus.
+
+```javascript
+import { createDirectus, rest, readItems } from '@directus/sdk'
+
+const client = createDirectus('directus_project_url').with(rest())
+
+const result = await client.request(readItems('collection_name', query_object))
+```
+
+Thay thế directus_project_url và collection_name bằng thông tin của project và collection bạn muốn thao tác. Về query_object, bạn có thể tham khảo thêm trong [tài liệu](https://docs.directus.io/reference/query.html).
+
+## Kết luận
+
+Như vậy mình đã giới thiệu đến các bạn một góc nhỏ có thể gọi là nhập môn Directus. Lí do mà mình hay chèn link tài liệu vào các đoạn đó là vì mình muốn các bạn có thể rèn thói quen đọc tài liệu và tìm hiểu, nghiên cứu nó sâu hơn mà nguồn tài liệu uy tín nhất không đâu khác đó chính là tài liệu chính thức từ nhà phát triển.
+
+Trong bài viết tới, mình sẽ giới thiệu đến các bạn thêm về một số tính năng nổi bật hoặc nâng cao về directus để các bạn có thể sớm master được nó như ... mình (thì chưa :v).
+
+Okey, hẹn gặp lại các bạn ở bài viết tiếp theo. Cảm ơn các bạn đã đọc bài viết của mình. Chúc các bạn một ngày tốt lành! 🌟
