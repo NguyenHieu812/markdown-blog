@@ -1,0 +1,66 @@
+---
+title: 'Directus và một số tính năng nâng cao'
+date: '2024-10-21'
+lastmod: '2024-10-21'
+tags: ['directus', 'guide', 'feature', 'advance']
+draft: false
+summary: Xin chào các bạn! Vẫn là mình, cậu bé fresher Fullstack với series về Directus.
+---
+
+## Giới thiệu
+
+Ở bài viết trước, mình đã hướng dẫn các bạn về cách cài đặt cũng như cấu hình để tạo một dự án sử dụng Directus cho Back-End và trong bài viết này, mình sẽ giới thiệu đến các bạn một số tính năng nâng cao trong Directus mà mình thấy nó là điểm cộng để cạnh tranh với Wordpress và các CMS khác.
+
+## Tính năng Phân quyền.
+
+Chính xác, điều đầu tiên mà mình thấy thích nhất ở Directus đó là việc các bạn có thể cấu hình việc phân quyền một cách cực dễ dàng và chuyên sâu đến ngỡ ngàng.
+
+![Directus Role](/static/images/roleDirectus.png)
+
+Khi các bạn đọc bài viết này của mình thì Directus đang ở version lastest là 11.1.1 và việc phân quyền đã trở nên sâu hơn đến từng thao tác của từng user.
+
+Như trong ảnh các bạn có thể thấy từng collections tương ứng với từng cột trong table và các bạn có thể setting quyền cho các user khác nhau để họ chỉ có thể thao tác các hành động tương ứng với những gì mà bạn đã cấu hình.
+
+![Ví dụ về phân quyền Read](/static/images/permisstionsDirectus.png)
+
+Ở đây các bạn có thể tạo 1 quyền mới là User và cấu hình cho các user có quyền này sẽ chỉ có thể đọc (Read) được các trường có dấu tích V, còn lại các trường khác user sẽ không thể đọc được, đây chính là một điều mà nếu các bạn code tay thì có thể phải mất vài tuần đến vài tháng để cấu hình hoàn chỉnh cho một tính năng phân quyền phức tạp thế này, nhưng với Directus thì chỉ cần click click và click.
+
+## Flow của Directus.
+
+Một tính năng khác cũng rất hay ở Directus đó chính là Flow, nơi mà các bạn có thể chỉ cần kéo thả vài bước là đã có cho mình 1 flow tự động thực hiện 1 quá trình phức tạp mà không cần viết code (hoặc ít code). Về chi tiết thì các bạn có thể tham khảo tài liệu [tại đây](https://docs.directus.io/app/flows.html#flows).
+
+![Directus Flow](/static/images/directusFlow.png)
+
+Bên trên là ảnh minh hoạ về 1 flow cơ bản, nó sẽ giống như 1 event hook, tự động chạy các sự kiện được cấu hình sẵn, với flow này mình sẽ console.log ra data của bản ghi mới trong cột Packages khi mà cột Packages có một bản ghi được tạo.
+
+Các bạn cũng có thể cấu hình thêm nhiều tính năng khác như tự động gửi Email, tự động chuyển trạng thái, cập nhật data khi user thao tác hoặc khi có data ở trong cột, table thay đổi,... Tiện lợi thì cũng đi kèm rủi ro, ví dụ nếu server BE của các bạn bị sập hoặc bị hack thì vẫn có khả năng các bạn phải tạo lại flow mới. Đương nhiên là nhà phát triển cũng đã tính toán trước và cung cấp các giải pháp như backup: Các bạn chỉ cần tạo flow, sau đó đều đặn mỗi ngày hoặc mỗi tuần các bạn backup lại database của mình thì ở trong đó đã có sẵn logic flow của các bạn và nếu bị mất, đơn giản các bạn chỉ cần tạo mới và import lại là done!!!.
+
+## Custom API với Directus Extentions.
+
+Đây rồi, đây chính là điều mà mình cực kỳ khoái nếu hỏi điều gì khiến mình nghiền Directus như vậy. Directus cung cấp 1 bộ SDK trong đó các bạn có thể sử dụng các phương thức như readItems, createItems, updateItems, readByQuery,... để thực hiện các thao tac CRUD cơ bản đến nâng cao một cách tiện lợi nhưng các bạn phải truyền đúng cấu hình params được Directus khai báo sẵn. [Xem thêm](https://docs.directus.io/reference/introduction.html).
+
+```javascript
+import { createDirectus, rest, readItem } from '@directus/sdk'
+
+const client = createDirectus('https://directus.example.com').with(rest())
+
+const result = await client.request(readItem('articles', '15'))
+```
+
+Ở ví dụ trên các bạn có thể lấy ra thông tin của item có index là 15 trong collection articles, rất đơn giản nhỉ ^^.
+
+Nhưng như vậy thì hơi không được flexiable cho lắm vì ứng dụng của chúng ta luôn có những yêu cầu cao hơn, buộc chúng ta thay vì chỉ dùng sẵn thì phải tự custom, và đó là lí do mà Directus cung cấp tính năng custom Extentions. [Xem thêm]([Xem thêm](https://docs.directus.io/reference/introduction.html).
+
+Có 3 kiểu Extentions chính mà Directus hỗ trợ chúng ta custom đó là:
+
+- **App Extensions**: Đây là kiểu extentions cho phép chúng ta tự custom các phần như giao diện, layout, panel, module,... Hiểu đơn giản thì ở phần này chúng ta có thể dùng code để viết ra một ứng dụng, packages, giao diện để nhúng vào Directus, nhúng trực tiếp vào luồng hoạt động của Directus trong sản phẩm của mình.
+
+- **API Extensions**: Phần này thì phần lớn anh em Back-End đều đã biết và thực sự là làm việc mỗi ngày đó chính là custome API, tạo các endpoint để xử lý logic với database, các yêu cầu từ FE và một số nghiệp vụ khác.
+
+- **Hybrid Extensions**: Với Hybrid Extensions, chúng ta có thể can thiệp trực tiếp vào cả FE lẫn BE và một trong số đó bao gồm FLow mà mình đã kể trên, còn lại đó là Bundles, một thành phần cho phép chúng ta quản lý các extension khác như một module cha chứa nhiều module con.
+
+## Lời Kết
+
+Vậy là ở bài viết này mình đã giới thiệu đến các bạn một số tính năng nâng cao của Directus, tài liệu tham khảo mình đã để ở cuối mỗi phần, các bạn có thể tham khảo trực tiếp ở trang tài liệu của nhà phát triển. Những gì mình chia sẻ đều là từ kinh nghiệm thực tế và theo cách hiểu của mình, nếu có chỗ nào sai sót hoặc thiếu mong các bạn góp ý. Cảm ơn các bạn đã đọc bài viết này của mình, chúc các bạn sớm master Directus.
+
+Ở bài viết tới, chúng ta sẽ cùng tìm hiểu thêm về Directus nhé, hoặc các bạn có thể cho mình biết chủ đề mà các bạn quan tâm bằng cách comment hoặc gửi mail cho mình qua địa chỉ: tronghieu12802@mail.com.
