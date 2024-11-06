@@ -1,0 +1,83 @@
+---
+title: 'Tìm hiểu về git flow cơ bản'
+date: '2024-11-06'
+lastmod: '2024-11-06'
+tags: ['github', 'guide']
+draft: false
+authors: ['devphuc']
+summary: Khi làm việc với  các dự án lớn, việc quản lý code và lịch sử commit trở nên phức tạp hơn. Git  Flow là một công cụ giúp bạn quản lý code và lịch sử commit một cách hiệu quả.
+---
+
+# Git Flow và Tầm Quan Trọng của Nó
+
+Song hành cùng với việc sử dụng **GIT**, những lập trình viên khi bắt đầu va chạm với môi trường làm phần mềm thực tế cũng cần phải nắm cho mình một kiến thức tốt về **GIT FLOW**.
+
+## Git Flow là gì và Tại sao Nó Quan Trọng?
+
+Đầu tiên, hãy đến với khái niệm về **GIT FLOW**.  
+Hiểu đơn giản, **GIT FLOW** là một **quy trình làm việc giúp quản lý và tổ chức mã nguồn** dựa trên hệ thống phân nhánh của **GIT**. Các nhánh trong GIT FLOW được phân chia rõ ràng, giúp lập trình viên có thể **quản lý các phiên bản** và **quy trình phát triển** một cách hiệu quả. Quy trình này không chỉ đảm bảo **an toàn khi hợp nhất mã** mà còn giảm thiểu **rủi ro** cho dự án, đặc biệt là các dự án dài hạn với nhiều lập trình viên cùng phát triển.
+
+## Mô Hình Git Flow
+
+Là một lập trình viên web, mình đã có cơ hội áp dụng **GIT FLOW** trong một số dự án, từ nhỏ đến lớn. Dưới đây là các khái niệm chính mà mình đã đúc kết:
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/5mwmvr8ke42smertn688.png)
+
+_Mô hình Git Flow với các nhánh phân chia rõ ràng theo tính năng (Nguồn devopsdoc.osb.group)_
+
+### Các Nhánh Chính trong Git Flow
+
+- **`main`**: Là nhánh mặc định khi khởi tạo repo mới. Nhánh này chứa phiên bản **ổn định** của phần mềm. Mỗi commit lên `main` đều là một **cập nhật tính năng**.
+- **`release`**: Được tạo từ `develop` để thực hiện các **bước kiểm thử trước khi phát hành** lên `main`. Nhánh này chứa mã nguồn chính thức của phiên bản sắp ra mắt.
+
+- **`develop`**: Là nhánh chính trong quá trình phát triển, nơi các chức năng mới được hoàn thiện trước khi được đẩy lên `release`.
+
+- **`feature`**: Được tạo từ `develop` để phát triển **các chức năng riêng biệt**. Sau khi hoàn thành, lập trình viên sẽ hợp nhất code từ nhánh `feature` vào `develop`.
+
+- **`hotfix`**: Được tạo ra khi cần **sửa lỗi khẩn cấp** trên `main` và hợp nhất lại vào cả `main` và `develop`.
+
+## Ví Dụ Thực Tế Về Git Flow trong Dự Án
+
+Trong một dự án cụ thể tại công ty, team được chia như sau:
+
+- **Dev**: Phúc, Việt Anh, Thái
+- **DevOps**: Triệu
+
+### Quy Trình Thực Hiện Dự Án
+
+1. **Khởi tạo dự án**:
+
+   - Phúc tạo nhánh `develop` từ nhánh `main` - nhánh mặc định khi khởi tạo repo.
+
+2. **Tạo nhánh `feature`**:
+
+   - Phúc, Thái, Việt Anh mỗi người tạo một nhánh `feature` riêng từ nhánh `develop` với tên theo chức năng: `feature/<tên chức năng>`.
+
+3. **Hoàn thiện và merge nhánh `feature`**:
+
+   - Sau khi hoàn thành chức năng, Phúc, Thái, Việt Anh lần lượt **merge** code vào nhánh `develop`.
+
+4. **Chuẩn bị phiên bản phát hành**:
+
+   - Anh Xuân, quản lý dự án, quyết định phát hành phiên bản đầu tiên. Triệu tạo nhánh `release/<version>` từ `develop`, tiến hành **build dự án** và **deploy** lên môi trường test.
+
+5. **Kiểm tra và sửa lỗi nhỏ trên `release`**:
+
+   - Triệu kiểm tra, sửa một số bug nhỏ, sau đó merge code từ `release` vào cả `main` và `develop`.
+
+6. **Triển khai phiên bản đầu tiên**:
+
+   - Phiên bản `version 1.xx` ra đời và chạy trên môi trường thực.
+
+7. **Xử lý yêu cầu thay đổi nhanh với `hotfix`**:
+
+   - Dự án đang chạy ổn định, nhưng anh Xuân yêu cầu thay đổi giao diện một nút. Phúc tạo nhánh `hotfix/btn-warning`, sửa button, và **merge lại** vào `main` và `develop`.
+
+8. **Cập nhật và triển khai**:
+   - Sau khi hoàn tất, phiên bản cập nhật mới được deploy lên production, nâng cao trải nghiệm người dùng.
+
+## Kết Luận
+
+Kết thúc ví dụ thực tế trên, hy vọng rằng bạn đã có cái nhìn rõ ràng hơn về cách **Git Flow hoạt động**. Từ việc quản lý các `feature`, xử lý lỗi khẩn cấp `hotfix`, cho đến phát hành các phiên bản cập nhật `release`, quy trình này giúp nhóm lập trình **làm việc hiệu quả** và đảm bảo **sự ổn định của dự án**. Nắm bắt quy trình Git Flow không chỉ giúp lập trình viên phối hợp tốt trong nhóm mà còn tạo ra một sản phẩm chất lượng và dễ dàng mở rộng. Mong rằng những kiến thức này sẽ hữu ích cho công việc của bạn!
+
+_Chúc bạn thành công và cảm ơn đã đọc bài viết!_
