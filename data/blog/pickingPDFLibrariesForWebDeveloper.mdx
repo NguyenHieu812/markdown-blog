@@ -1,0 +1,87 @@
+---
+title: 'Picking PDF Libraries For Web Developer'
+date: '2024-12-02'
+lastmod: '2024-12-02'
+tags: ['PDF', 'guide']
+draft: false
+authors: ['missNomer']
+summary: We've all been there. Digging through numerous blog posts, articles, and comments in obscure forums...
+---
+
+# Introduction
+
+We've all been there. Digging through numerous blog posts, articles, and comments in obscure forums to find the perfect tool for the perfect project. And then spending the next 48 hours struggling with those tools only to find them ill-fitted for the scope or the type of the project.
+
+Unfortunately, this isn't a place where you can find _The One PDF Generator to Rule Them All_, but rather, a nice place to start. This series will consist of 3 parts, covering the topics: Finding the right PDF library, setup guide, and optimization.
+
+> [!caution] A Fair Warning
+> This review reflects our subjective perspective, as web development ecosystem is ever-changing. So this post is not guaranteed to be fully up-to-date or representative of the current state of the technology. I'd encourage you to do your own research to verify and supplement the information provided here.
+
+# The right tool for the job
+
+They say "When you're confronted with too many choices, you'll make a bad one". It couldn't have been truer for our case. There are plenty of handy tools and powerful libraries with extensive features to choose from, and during our research we have written down a list of criteria for evaluating them. We will go over a few criteria to help you figure out if any library works for your project.
+
+- ##### **Front End & Back End Support**: Can it generate PDF directly in the browser? What about on the server?
+
+- ##### **Template Support**: Does it support popular templating engines like Handlebars? Does it offer its own templating feature? Or do we have to set up our own scaffolding?
+
+- ##### **Ease of Use**: How easy it is to set it up and use? Does it require a steep learning curve?
+
+- ##### **Performance[^3]**: Can it handle large PDF generation? Does larger datasets impact its speed?
+
+- ##### **Customization**: Can the PDF output be easily customized to match design requirements? Does the library provide a high degree of control over styling and layout?
+
+This following table gives you a snapshot view of how the libraries compare to one another
+
+| Library     | Template Support | Front End & Back End | Ease of Use | Customization |
+| ----------- | ---------------- | -------------------- | ----------- | ------------- |
+| React-PDF   | No[^1]           | Front End            | Yes         | Partial[^1]   |
+| pdfme       | Yes              | Both                 | Yes         | Yes           |
+| html2pdf.js | No               | Front End            | Yes         | Yes           |
+| Puppeteer   | Yes              | Back End             | Partial[^2] | Yes           |
+| jsPDF       | No               | Both                 | No          | No            |
+| PDFKit      | No[^1]           | Both                 | Yes         | Partial[^1]   |
+
+[^1]: While both React-PDF and PDFKit provide modular, building block-style components to help construct PDF content, they fall short in a few key areas. Specifically, they lack robust styling capabilities, pagination support, and the ability to easily inject dynamic data into those pre-built components.
+
+[^2]: Puppeteer is a browser automation API, but it does provide a powerful feature to generate PDF from HTML content. Therefore, we could use Handlebars, Pug, or any templating engine (even server-side React!) to set up the template for Puppeteer to generate.
+
+[^3]: You must be thinking: "That table's missing a column, where's performance?". Well, turn out performance measurement is a tricky subject. Depending on where we run it, the result might not reflect the actual capacity of the library. It's not really fair to compare the performance of a front end library which run on an arbitrary client browser, as opposed to a piece of backend code that run on a powerful server.
+
+# Verdict
+
+After experimenting, breaking stuff, and going through each library, [Puppeteer](https://pptr.dev/) seems to be our tool for the job.
+For context, [our project](https://frontend.gnhteam.com) requires an extensive and personal numerology report provided to premium user. Each file could contain somewhere between 40 to 60 pages, containing varied images and dynamic data.
+Let's go through the criteria and get into details together.
+
+### Back End Support
+
+With Puppeteer, you can automate virtually any task that you would do manually in a web browser. Except for making your own PDF, of course. That's the job for Chromium, the core of Puppeteer. By rendering an HTML template headlessly (no visible UI) via Chromium, Puppeteer then convert the "rendered" HTML to PDF. We then able to store or distribute the generated PDF to client.
+
+Why back end? One of the reason is because of the sheer number of pages that needed to process. As mentioned earlier, a single PDF report of an user could contain up to 60 pages. We cannot offload the generation to the client browser and assume that they have a powerful enough machine that will not froze the browser during the process.
+
+### Template support
+
+For a static page, html2pdf.js is an excellent choice. It utilizes the Canvas API to convert HTML to canvas, then from canvas to a JPG/PNG image. Then plasters that image to a PDF file.
+...Or you can just use pdfme and capitalize on their Template Design tool (Absolutely love it, BTW).
+With either, the result is a 1:1 HTML to PDF conversion that keep all of the original page's content and style.
+
+But, we needed something more flexible, capable of handling dynamic data with fluctuating number of pages. And as of current, pdfme still a bit rigid for that. A dedicated templating engine like Handlebars was one of the piece of the puzzle when combined with Puppeteer.
+
+### Ease of Use
+
+As it turns out, Puppeteer is not "plug and play" fresh out of the box. Because our project is wrapped inside a docker container before shipping it to the server, we have ensure it's running on both development and production environment. Which involve making sure we install the right Chromium version, installing the matching fonts, turning off incompatible browser feature flags, etc.. You get the point.
+
+### Performance
+
+Essentially, we open a Chrome browser on the server. It is best to assume that the performance is not that great. But the trade off is worth the trouble. To save resources, the server experiences a second mini cold start every 5 minutes after last user interaction, after it's already up and running. Why? Because keeping the browser on all the time without any user request is not ideal (shocking, I know).
+
+### Customization
+
+While fairly easy to use, React-PDF and PDFKit's components and styling options are quite barebone. Styling are done not through CSS, but by their own set of APIs. It is possible to match the design we had in mind, but it'd be time consuming.
+
+We settled for Handlebars for templating and customize with TailwindCSS-the tools we've already familiar with.
+
+# Conclusion
+
+The ecosystem of web development continues to evolve and grow with numerous list of libraries to choose from. But the choice comes down to your specific project needs. Whether you're trying for performance, ease of use, or scalability, there's a library that can help you succeed.

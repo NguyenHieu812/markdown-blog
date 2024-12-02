@@ -1,0 +1,87 @@
+---
+title: 'Top thư viện PDF cho lập trình viên Web.'
+date: '2024-12-02'
+lastmod: '2024-12-02'
+tags: ['PDF', 'guide']
+draft: false
+authors: ['missNomer']
+summary: Chúng ta đều từng trải qua điều này. Lục lọi qua vô số bài blog, bài viết và bình luận trên các diễn đàn ẩn để tìm công cụ...
+---
+
+# Giới Thiệu
+
+Chúng ta đều từng trải qua điều này. Lục lọi qua vô số bài blog, bài viết và bình luận trên các diễn đàn ẩn để tìm công cụ hoàn hảo cho dự án hoàn hảo. Và sau đó dành 48 giờ tiếp theo vật lộn với những công cụ đó chỉ để nhận ra chúng không phù hợp với phạm vi hay loại dự án.
+
+Rất tiếc, đây không phải là nơi bạn có thể tìm được _Trình Sinh PDF Tối Thượng_, mà là một điểm khởi đầu tốt. Loạt bài này sẽ bao gồm 3 phần, bao trùm các chủ đề: Tìm thư viện PDF phù hợp, hướng dẫn cài đặt và tối ưu hóa.
+
+> [!warning] Một Lời Cảnh Báo
+> Đánh giá này phản ánh quan điểm chủ quan của chúng tôi, bởi hệ sinh thái phát triển web liên tục thay đổi. Do đó, không đảm bảo hoàn toàn cập nhật hay đại diện cho trạng thái hiện tại của công nghệ. Chúng tôi khuyến khích bạn tự nghiên cứu để xác minh và bổ sung thông tin được cung cấp ở đây.
+
+# Công Cụ Phù Hợp Với Công Việc
+
+Người ta thường nói "Khi bị đối mặt với quá nhiều lựa chọn, bạn sẽ đưa ra quyết định sai". Điều này không thể đúng hơn với trường hợp của chúng tôi. Có rất nhiều công cụ hữu ích và thư viện mạnh mẽ với các tính năng mở rộng để lựa chọn, và trong quá trình nghiên cứu, chúng tôi đã ghi lại danh sách các tiêu chí để đánh giá chúng. Sau đó, chúng tôi sẽ xem xét lựa chọn của nhóm và giải thích quyết định của mình.
+
+- ##### **Hỗ Trợ Front End & Back End**: Nó có thể tạo PDF trực tiếp trong trình duyệt không? Còn trên máy chủ thì sao?
+
+- ##### **Hỗ Trợ Mẫu**: Nó có hỗ trợ các công cụ tạo mẫu phổ biến như Handlebars không? Nó có cung cấp tính năng tạo mẫu riêng không? Hay chúng ta phải tự thiết lập hệ giàn giáo?
+
+- ##### **Dễ Sử Dụng**: Việc cài đặt và sử dụng có dễ dàng không? Nó có yêu cầu một đường học tập dốc không?
+
+- ##### **Hiệu Năng[^3]**: Nó có thể xử lý việc tạo PDF lớn không? Các bộ dữ liệu lớn có ảnh hưởng đến tốc độ của nó không?
+
+- ##### **Tùy Chỉnh**: Đầu ra PDF có thể dễ dàng tùy chỉnh để phù hợp với các yêu cầu thiết kế không? Thư viện có cung cấp mức độ điều khiển cao về kiểu dáng và bố cục không?
+
+Bảng sau đây cung cấp cái nhìn tổng quan về cách các thư viện so sánh với nhau
+
+| Thư Viện    | Hỗ Trợ Mẫu | Front End & Back End | Dễ Sử Dụng   | Tùy Chỉnh    |
+| ----------- | ---------- | -------------------- | ------------ | ------------ |
+| React-PDF   | Không[^1]  | Front End            | Có           | Một Phần[^1] |
+| pdfme       | Có         | Cả Hai               | Có           | Có           |
+| html2pdf.js | Không      | Front End            | Có           | Có           |
+| Puppeteer   | Có         | Back End             | Một Phần[^2] | Có           |
+| jsPDF       | Không      | Cả Hai               | Không        | Không        |
+| PDFKit      | Không[^1]  | Cả Hai               | Có           | Một Phần[^1] |
+
+[^1]: Trong khi cả React-PDF và PDFKit đều cung cấp các thành phần kiểu khối có thể xây dựng để giúp xây dựng nội dung PDF, chúng lại thiếu một số khía cạnh then chốt. Cụ thể, chúng thiếu khả năng tạo kiểu mạnh mẽ, hỗ trợ phân trang và khả năng dễ dàng chèn dữ liệu động vào các thành phần được xây dựng trước đó.
+
+[^2]: Puppeteer là một API tự động hóa trình duyệt, nhưng nó cung cấp một tính năng mạnh mẽ để tạo PDF từ nội dung HTML. Do đó, chúng ta có thể sử dụng Handlebars, Pug hoặc bất kỳ công cụ tạo mẫu nào (thậm chí là React phía máy chủ!) để thiết lập mẫu cho Puppeteer tạo.
+
+[^3]: Bạn có thể đang nghĩ: "Bảng này thiếu một cột, hiệu năng ở đâu?". Hóa ra việc đo hiệu năng là một chủ đề phức tạp. Tùy thuộc vào nơi chúng ta chạy, kết quả có thể không phản ánh năng lực thực sự của thư viện. Không thực sự công bằng khi so sánh hiệu năng của thư viện front-end chạy trên trình duyệt khách hàng bất kỳ, so với một đoạn mã back-end chạy trên máy chủ mạnh mẽ.
+
+# Phán Quyết
+
+Sau khi thử nghiệm, phá vỡ mọi thứ và đi qua từng thư viện, [Puppeteer](https://pptr.dev/) dường như là công cụ phù hợp với công việc của chúng tôi.
+Để có bối cảnh, [dự án của chúng tôi](https://frontend.gnhteam.com) yêu cầu một báo cáo số học chi tiết và cá nhân được cung cấp cho người dùng cao cấp. Mỗi tệp có thể chứa từ 40 đến 60 trang, chứa nhiều hình ảnh và dữ liệu động.
+Chúng ta hãy xem xét các tiêu chí và cùng nhau đi sâu chi tiết.
+
+### Hỗ Trợ Back End
+
+Với Puppeteer, bạn có thể tự động hóa hầu như mọi tác vụ mà bạn sẽ làm thủ công trong trình duyệt web. Ngoại trừ việc tạo PDF của riêng bạn, tất nhiên. Đó là công việc của Chromium, lõi của Puppeteer. Bằng cách hiển thị một mẫu HTML một cách ẩn (không có giao diện người dùng) thông qua Chromium, Puppeteer sau đó chuyển đổi HTML "được hiển thị" sang PDF. Chúng tôi sau đó có thể lưu trữ hoặc phân phối PDF đã tạo cho khách hàng.
+
+Tại sao là back-end? Một trong những lý do là do số lượng trang cần xử lý. Như đã đề cập trước đó, một báo cáo PDF duy nhất của người dùng có thể chứa tới 60 trang. Chúng ta không thể chuyển việc tạo sang trình duyệt khách và giả định rằng họ có một máy đủ mạnh sẽ không bị đóng băng trong quá trình này.
+
+### Hỗ Trợ Mẫu
+
+Đối với một trang tĩnh, html2pdf.js là một lựa chọn xuất sắc. Nó sử dụng Canvas API để chuyển đổi HTML thành canvas, sau đó từ canvas thành hình ảnh JPG/PNG. Sau đó dán hình ảnh đó vào tệp PDF.
+Hoặc bạn có thể sử dụng pdfme và tận dụng công cụ Thiết Kế Mẫu của họ (Tuyệt vời, BTW).
+Với cả hai, kết quả là một chuyển đổi HTML sang PDF 1:1 giữ nguyên toàn bộ nội dung và kiểu dáng của trang gốc.
+
+Nhưng, chúng tôi cần một thứ linh hoạt hơn, có khả năng xử lý dữ liệu động với số trang thay đổi. Và hiện tại, pdfme vẫn còn hơi cứng nhắc với điều đó. Một công cụ tạo mẫu chuyên dụng như Handlebars là một phần của câu đố khi được kết hợp với Puppeteer.
+
+### Dễ Sử Dụng
+
+Hóa ra, Puppeteer không phải là "cắm và chạy" ngay từ đầu. Vì dự án của chúng tôi được gói trong một docker container trước khi chuyển đến máy chủ, chúng tôi phải đảm bảo nó chạy được trên cả môi trường phát triển và sản xuất. Điều này liên quan đến việc đảm bảo cài đặt đúng phiên bản Chromium, cài đặt font phù hợp, tắt các cờ tính năng trình duyệt không sử dụng để tối ưu hóa, v.v.. Bạn hiểu ý tôi rồi.
+
+### Hiệu Năng
+
+Về cơ bản, chúng tôi mở một trình duyệt Chrome trên máy chủ. Tốt nhất là giả định rằng hiệu năng không được tốt lắm. Nhưng sự đánh đổi là đáng giá. Để tiết kiệm tài nguyên, máy chủ trải qua một khởi động lạnh nhỏ sau mỗi 5 phút sau lần tương tác người dùng cuối cùng, sau khi đã chạy xong. Tại sao? Vì việc giữ trình duyệt luôn mở mà không có yêu cầu người dùng là không lý tưởng (thật bất ngờ, phải không?).
+
+### Tùy Chỉnh
+
+Mặc dù khá dễ sử dụng, các thành phần và tùy chọn kiểu của React-PDF và PDFKit khá cơ bản. Kiểu được thực hiện không phải thông qua CSS, mà là thông qua bộ API riêng của chúng. Có thể phù hợp với thiết kế mà chúng tôi nghĩ đến, nhưng sẽ tốn nhiều thời gian.
+
+Chúng tôi đã chọn Handlebars để tạo mẫu và tùy chỉnh với TailwindCSS - những công cụ mà chúng tôi đã quen thuộc.
+
+# Kết Luận
+
+Hệ sinh thái phát triển web tiếp tục phát triển và mở rộng với danh sách thư viện để lựa chọn. Nhưng sự lựa chọn phụ thuộc vào nhu cầu cụ thể của dự án của bạn. Cho dù bạn đang tìm kiếm hiệu năng, dễ sử dụng hay khả năng mở rộng, đều có một thư viện có thể giúp bạn thành công.
