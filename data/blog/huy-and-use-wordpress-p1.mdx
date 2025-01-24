@@ -1,0 +1,141 @@
+---
+title: 'WordPress - Giới thiệu và cách dùng cơ bản'
+date: '2025-01-24'
+lastmod: '2025-01-24'
+tags: ['wordpress', 'guide', 'cms', 'blog']
+draft: false
+summary: Wordpress từ lâu đã là một hệ thống quản lý nội dung (CMS) mã nguồn mở phổ biến top đầu trong lĩnh vực phát triển phần mềm, vậy bạn đã biết được những gì về nó? Hãy cũng mình tìm hiểu về các khái niệm xoay quanh Wordpress và cách sử dụng cũng như cách mua một themes và cấu hình để có một trang web bằng wordpress hoàn chỉnh nhé!.
+---
+
+## Giới thiệu
+
+Được ra mắt lần đầu vào những năm 2003, khi mà việc tạo ra một trang web cá nhân hoặc một blog cá nhân là một điều xa xỉ, Wordpress đã trở thành một công cụ không thể thiếu cho những người muốn chia sẻ kiến thức, kinh nghiệm của mình với mọi người trên toàn thế giới.
+
+Sau hơn 21 năm hiện tại, tính đến năm 2021 thì Wordpress đã chiếm khoảng 40% số lượng trang web trên toàn thế giới, đem lại cho nền tàng này một chỗ đứng ngày càng vững chắc trong lĩnh vực phát triển phần mềm.
+
+## Các đặc điểm nổi bật của Wordpress
+
+Một số điểm nổi bật mà mỗi khi nhắc đến Wordpress thì chúng ta không thể không nhắc đến:
+
+1. Dễ sử dụng:
+
+   WordPress có giao diện trực quan, sau nhiều lần cải tiến thì nó đã trở nên thân thiện với người dùng hơn, cho phép ngay cả những người không có kiến thức lập trình vẫn có thể tạo và quản lý trang web và những người đã một thời gian không dùng quay trở lại cũng vẫn sẽ dễ dàng sử dụng.
+
+2. Mã nguồn mở:
+
+   Bạn có thể tải xuống, sử dụng, chỉnh sửa và phân phối lại mà không phải trả phí vì mã nguồn của Wordpress là mã nguồn mở, giúp cho việc phát triển và tùy chỉnh trang web trở nên dễ dàng hơn.
+
+3. Đa năng và tùy biến cao:
+
+   Hàng nghìn giao diện (themes) và plugin giúp bạn có thể tùy chỉnh trang web theo nhu cầu, từ blog cá nhân đến các trang thương mại điện tử đến các hệ thống lớn cho doanh nghiệp.
+
+4. Hỗ trợ SEO tốt:
+
+   WordPress được thiết kế để tối ưu hóa SEO, giúp các trang web dễ dàng cải thiện thứ hạng trên công cụ tìm kiếm. Đáp ứng tốt cho các doanh nghiệp vừa và nhỏ có thể cạnh tranh với các đối thủ lớn hơn.
+
+5. Cộng đồng sử dụng lớn:
+
+   WordPress có một cộng đồng hỗ trợ rộng lớn từ khắp nơi trên thế giới, từ diễn đàn trực tuyến đến các tài liệu và hướng dẫn chi tiết. Vì vậy, khi bạn gặp bug hay vấn đề cần giải quyết thì bạn có thể tìm kiếm ở trên các nền tảng như Google, Stackoverflow, Reddit, hoặc thậm chí là trên các trang web chính thức của Wordpress.
+
+   Tuy nhiên, do liên tục update nên nếu bạn không cập nhật thường xuyên thì có thể gặp một số vấn đề về bảo mật hoặc tương thích với các phiên bản mới nhất.
+
+6. Plugin tăng khả năng mở rộng:
+
+   Nhờ sự ra đời của việc tích hợp các plugin, chúng ta có thể thêm các tính năng như giỏ hàng, biểu mẫu liên hệ, tích hợp mạng xã hội, và nhiều hơn nữa mà không cần phụ thuộc vào mã nguồn sẵn có hoặc các themes mua trên thị trường.
+
+> Lưu ý: Trong bài viết này mình sẽ chỉ giới hạn việc giới thiệu và cách sử dụng Wordpress cơ bản, nếu bạn muốn tìm hiểu sâu hơn về các chức năng, cách cài đặt, cách tùy chỉnh, cách viết plugin, mua và cài đặt themes, cách tối ưu hóa SEO,.., thì bạn có thể xem tại bài viết sau của mình hoặc tìm kiếm trên các trang web như [W3School](https://www.w3schools.com/), [TutorialsPoint](https://www.tutorialspoint.com/), [Codecademy](https://www.codecademy.com/),...
+
+## Cách cài đặt Wordpress (môi trường local)
+
+Để cài đặt Wordpress trên máy tính cá nhân, bạn cần cài đặt một số phần mềm sau:
+
+- **XAMPP:**
+
+  Hỗ trợ PHP, MySQL, Apache.
+  [Tải tại](https://www.apachefriends.org.)
+
+- **MAMP (dành cho MacOS và Windows):**
+
+  Hỗ trợ PHP, MySQL.
+  [Tải tại](https://www.mamp.info.)
+
+- **WAMP (dành cho Windows):**
+
+  Tương tự XAMPP, nhưng dành riêng cho Windows.
+  [Tải tại](http://www.wampserver.com.)
+
+- **Local by Flywheel:**
+
+  Công cụ dành riêng để phát triển WordPress.
+  [Tải tại](https://localwp.com.)
+
+**Sau khi cài đặt xong** <br />
+Bước 1:
+
+- Mở phần mềm (XAMPP Control Panel).
+- Start các dịch vụ: <br /> - Apache (Web Server). <br /> - MySQL (Database). <br />
+  > Thường Xampp sẽ cần cấu hình port 80, nếu bạn đã cài đặt một số phần mềm khác như Skype, Teamviewer,.. thì có thể sẽ phải cần tìm cách thay đổi port hoặc tắt phần mềm đó đi. <br />
+
+Bước 2: <br />
+
+- Truy cập phpMyAdmin: <br />
+- Mở trình duyệt, nhập: http://localhost/phpmyadmin.
+  <ul>
+    <li>Nhấn New.</li>
+    <li>Nhập tên cơ sở dữ liệu (ví dụ: wordpress).</li>
+    <li>Chọn utf8_general_ci ở mục Collation.</li>
+    <li>Nhấn Create.</li>
+  </ul>
+
+Bước 3: <br />
+Tải WordPress:
+Truy cập: https://wordpress.org và tải phiên bản mới nhất.
+
+Giải nén WordPress:
+Giải nén file tải về.
+Sao chép thư mục WordPress vào thư mục của local server:
+XAMPP: C:\xampp\htdocs\
+MAMP: /Applications/MAMP/htdocs/
+WAMP: C:\wamp\www\
+Đổi tên thư mục WordPress nếu cần (ví dụ: mywebsite).
+
+Bước 4: <br />
+
+Truy cập WordPress qua trình duyệt:
+
+Mở trình duyệt, nhập: http://localhost/mywebsite (thay mywebsite bằng tên thư mục bạn vừa tạo).
+Bắt đầu quá trình cài đặt:
+
+Chọn ngôn ngữ.
+Nhập thông tin cơ sở dữ liệu:
+Database Name: Tên cơ sở dữ liệu bạn đã tạo (ví dụ: wordpress).
+Username: root (mặc định trong local server).
+Password: Để trống (nếu dùng XAMPP) hoặc nhập mật khẩu mặc định của phần mềm.
+Database Host: localhost.
+Table Prefix: wp\_ (mặc định, hoặc thay đổi nếu muốn).
+Nhấn Submit (Gửi).
+Hoàn tất cài đặt:
+
+Nhập thông tin:
+Site Title: Tên website của bạn.
+Username: Tài khoản quản trị.
+Password: Mật khẩu cho tài khoản quản trị.
+Email: Email của bạn.
+Nhấn Install WordPress.
+Đăng nhập WordPress:
+
+Truy cập: http://localhost/mywebsite/wp-admin.
+Đăng nhập bằng tài khoản quản trị vừa tạo.
+
+Bước 5: <br />
+Cài Themes và Plugins từ dashboard của WordPress.
+Điều chỉnh cấu hình trong Settings:
+General: Tên website, khẩu hiệu.
+Permalinks: Đường dẫn URL.
+Phát triển hoặc thử nghiệm tính năng tùy thích.
+
+## Kết luận
+
+Như vậy, ở bài viết này chúng ta cũng đã cùng nhau tìm hiểu về Wordpress một cách cơ bản nhất, từ việc cài đặt và cấu hình ở phía local đến việc thực hiển tạo một trang web với Wordpress. Mình hi vọng, qua bài viết này các bạn sẽ có thêm những kiến thức về Wordpress và có thể tự tạo cho mình một trang web cá nhân hoặc một blog cá nhân để chia sẻ kiến thức, kinh nghiệm của mình với mọi người trên toàn thế giới.
+
+Trong bài viết tới, mình sẽ giới thiệu đến các bạn một số chức năng nâng cao của Wordpress, kèm theo đó là hướng dẫn về cách mua themes và cấu hình 1 website WordPress nhé!. Chúc các bạn một ngày tốt lành! 🌟
