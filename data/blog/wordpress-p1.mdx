@@ -70,69 +70,75 @@ Một số điểm nổi bật mà mỗi khi nhắc đến Wordpress thì chúng
   [Tải tại](https://localwp.com.)
 
 **Sau khi cài đặt xong** <br />
-Bước 1:
 
-- Mở phần mềm (XAMPP Control Panel).
-- Start các dịch vụ: <br /> - Apache (Web Server). <br /> - MySQL (Database). <br />
-  > Thường Xampp sẽ cần cấu hình port 80, nếu bạn đã cài đặt một số phần mềm khác như Skype, Teamviewer,.. thì có thể sẽ phải cần tìm cách thay đổi port hoặc tắt phần mềm đó đi. <br />
+### **Bước 1: Khởi động XAMPP**
 
-Bước 2: <br />
+1. Mở phần mềm **XAMPP Control Panel**.
+2. Khởi động các dịch vụ:
+   - **Apache** (Web Server).
+   - **MySQL** (Database).
 
-- Truy cập phpMyAdmin: <br />
-- Mở trình duyệt, nhập: http://localhost/phpmyadmin.
-  <ul>
-    <li>Nhấn New.</li>
-    <li>Nhập tên cơ sở dữ liệu (ví dụ: wordpress).</li>
-    <li>Chọn utf8_general_ci ở mục Collation.</li>
-    <li>Nhấn Create.</li>
-  </ul>
+> **Lưu ý:** XAMPP thường sử dụng port 80. Nếu bạn đã cài đặt một số phần mềm khác như Skype, TeamViewer,... thì có thể cần thay đổi port hoặc tắt các phần mềm này.
 
-Bước 3: <br />
-Tải WordPress:
-Truy cập: https://wordpress.org và tải phiên bản mới nhất.
+---
 
-Giải nén WordPress:
-Giải nén file tải về.
-Sao chép thư mục WordPress vào thư mục của local server:
-XAMPP: C:\xampp\htdocs\
-MAMP: /Applications/MAMP/htdocs/
-WAMP: C:\wamp\www\
-Đổi tên thư mục WordPress nếu cần (ví dụ: mywebsite).
+### **Bước 2: Tạo cơ sở dữ liệu trong phpMyAdmin**
 
-Bước 4: <br />
+1. Mở trình duyệt, truy cập: [http://localhost/phpmyadmin](http://localhost/phpmyadmin).
+2. Thực hiện các bước sau:
+   - Nhấn **New**.
+   - Nhập tên cơ sở dữ liệu (ví dụ: `wordpress`).
+   - Chọn **utf8_general_ci** ở mục **Collation**.
+   - Nhấn **Create**.
 
-Truy cập WordPress qua trình duyệt:
+---
 
-Mở trình duyệt, nhập: http://localhost/mywebsite (thay mywebsite bằng tên thư mục bạn vừa tạo).
-Bắt đầu quá trình cài đặt:
+### **Bước 3: Tải và giải nén WordPress**
 
-Chọn ngôn ngữ.
-Nhập thông tin cơ sở dữ liệu:
-Database Name: Tên cơ sở dữ liệu bạn đã tạo (ví dụ: wordpress).
-Username: root (mặc định trong local server).
-Password: Để trống (nếu dùng XAMPP) hoặc nhập mật khẩu mặc định của phần mềm.
-Database Host: localhost.
-Table Prefix: wp\_ (mặc định, hoặc thay đổi nếu muốn).
-Nhấn Submit (Gửi).
-Hoàn tất cài đặt:
+1. Truy cập [https://wordpress.org](https://wordpress.org) và tải phiên bản mới nhất.
+2. Giải nén file đã tải về.
+3. Sao chép thư mục WordPress vào thư mục của local server:
+   - **XAMPP**: `C:\xampp\htdocs\`
+   - **MAMP**: `/Applications/MAMP/htdocs/`
+   - **WAMP**: `C:\wamp\www\`
+4. Đổi tên thư mục WordPress nếu cần (ví dụ: `mywebsite`).
 
-Nhập thông tin:
-Site Title: Tên website của bạn.
-Username: Tài khoản quản trị.
-Password: Mật khẩu cho tài khoản quản trị.
-Email: Email của bạn.
-Nhấn Install WordPress.
-Đăng nhập WordPress:
+---
 
-Truy cập: http://localhost/mywebsite/wp-admin.
-Đăng nhập bằng tài khoản quản trị vừa tạo.
+### **Bước 4: Cài đặt WordPress**
 
-Bước 5: <br />
-Cài Themes và Plugins từ dashboard của WordPress.
-Điều chỉnh cấu hình trong Settings:
-General: Tên website, khẩu hiệu.
-Permalinks: Đường dẫn URL.
-Phát triển hoặc thử nghiệm tính năng tùy thích.
+1. Truy cập WordPress qua trình duyệt:
+   - Mở trình duyệt, nhập: [http://localhost/mywebsite](http://localhost/mywebsite) (thay `mywebsite` bằng tên thư mục bạn vừa tạo).
+2. Bắt đầu quá trình cài đặt:
+   - Chọn ngôn ngữ.
+   - Nhập thông tin cơ sở dữ liệu:
+     - **Database Name**: Tên cơ sở dữ liệu đã tạo (ví dụ: `wordpress`).
+     - **Username**: `root` (mặc định trong local server).
+     - **Password**: Để trống (nếu dùng XAMPP) hoặc nhập mật khẩu mặc định.
+     - **Database Host**: `localhost`.
+     - **Table Prefix**: `wp_` (mặc định, có thể thay đổi nếu muốn).
+   - Nhấn **Submit** (Gửi).
+3. Hoàn tất cài đặt:
+   - Nhập thông tin:
+     - **Site Title**: Tên website của bạn.
+     - **Username**: Tài khoản quản trị.
+     - **Password**: Mật khẩu cho tài khoản quản trị.
+     - **Email**: Email của bạn.
+   - Nhấn **Install WordPress**.
+4. Đăng nhập WordPress:
+   - Truy cập: [http://localhost/mywebsite/wp-admin](http://localhost/mywebsite/wp-admin).
+   - Đăng nhập bằng tài khoản quản trị vừa tạo.
+
+---
+
+### **Bước 5: Tùy chỉnh và cài đặt Themes, Plugins**
+
+1. Truy cập Dashboard của WordPress để:
+   - Cài đặt **Themes** và **Plugins**.
+2. Điều chỉnh cấu hình trong **Settings**:
+   - **General**: Tên website, khẩu hiệu.
+   - **Permalinks**: Đường dẫn URL.
+3. Bắt đầu phát triển hoặc thử nghiệm tính năng tùy thích.
 
 ## Kết luận
 

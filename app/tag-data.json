@@ -1,10 +1,13 @@
 {
   "directus": 2,
-  "guide": 5,
+  "guide": 6,
   "feature": 2,
   "advance": 1,
   "back-end": 1,
   "github": 1,
   "pdf": 2,
+  "wordpress": 1,
+  "cms": 1,
+  "blog": 1,
   "tự-sự": 1
 }
