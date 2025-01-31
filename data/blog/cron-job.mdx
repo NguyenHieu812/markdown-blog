@@ -1,0 +1,114 @@
+---
+title: 'Cron Job - cánh tay phải của lập trình viên'
+date: '2025-01-31'
+lastmod: '2025-01-31'
+tags: ['cron-job', 'guide', 'nodejs', 'blog']
+draft: false
+summary: 'Bạn đang tìm cách tự động hoá các tác vụ lặp đi lặp lại? Hãy thử cùng mình tìm hiểu vê cron job nhé!'
+---
+
+# Giới thiệu.
+
+Chắc hẳn ai trong chúng ta cũng đã từng nhận được những email tự động, hoặc tin nhắn tự động khi mua một đơn hàng, đặt hàng thành công phải không? Đúng vậy, các tác vụ đó được thực thi hoàn toàn tự động mà không cần ai phải ngồi trực và gửi đi bằng tay cả. Để làm được điều này chúng ta có khá nhiều cách nhưng trong bài viết này, mình sẽ hướng dẫn cho các bạn cách để thực thi các tác vụ như gửi email hoặc tự động kiểm tra dữ liệu thay đổi bằng cron job trong Nodejs với thư viện **node-cron** nhé.
+
+# Khái niệm.
+
+Cron job hiểu đơn giản là một tác vụ được lập lịch cố định và chạy tự động mà không cần sự can thiệp của lập trình viên trong quá trình thực thi tác vụ, nó được sử dụng rộng rãi trong các trường hợp như:
+
+- Chạy script định kỳ (hàng ngày, hàng tuần, hàng tháng).
+- Gửi email tự động.
+- Backup dữ liệu.
+- Dọn dẹp log file hoặc cache.
+
+# Cách dùng và ví dụ.
+
+- Ở bài viết về [WordPress - Mua themes và cấu hình](https://www.devtalk.online/blog/wordpress-p2) mình có nhắc tới trường hợp các bạn lưu cache và bị miss dữ liệu khi cập nhật bản ghi thì hôm nay chúng ta sẽ bám sát theo case đó để tìm hiểu các dùng và cách hoạt động của cron job nhé.
+
+- Đầu tiên chúng ta cần cài đặt **node-cron**
+
+```javascript
+npm install node-cron
+
+```
+
+Sau đó chúng ta sẽ giả định chúng ta có 1 table Employees và cứ mỗi khi có data thay đổi thì thông tin sẽ được lưu vào table log_data và chỉ cần lương (salary) của nhân viên nào đó thay đổi thì sẽ thực hiện gửi email đến nhân viên đó để thông báo, quá trình này chúng ta sẽ chạy tự động 5 giây 1 lần.
+
+> Lưu ý: Ví dụ trên dựa trên ví dụ về Trigger ở bài viết [này](https://www.devtalk.online/blog/trigger)
+
+```javascript
+const mysql = require('mysql2')
+const cron = require('node-cron')
+const nodemailer = require('nodemailer')
+
+// Thiết lập kết nối MySQL
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'your_password',
+  database: 'your_database',
+})
+
+// Hàm gửi email
+const sendEmail = (email, oldSalary, newSalary) => {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'your_email@gmail.com',
+      pass: 'your_email_password',
+    },
+  })
+
+  const mailOptions = {
+    from: 'your_email@gmail.com',
+    to: email,
+    subject: 'Thông báo thay đổi lương',
+    text: `Lương của bạn đã được thay đổi từ ${oldSalary} thành ${newSalary}.`,
+  }
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error('Lỗi gửi email:', error)
+    } else {
+      console.log('Email đã được gửi:', info.response)
+    }
+  })
+}
+
+// Cron job chạy mỗi 5 giây
+cron.schedule('*/5 * * * * *', () => {
+  console.log('Đang kiểm tra thay đổi lương...')
+
+  const query = `
+        SELECT log_data.record_id, employees.email, log_data.old_value, log_data.new_value
+        FROM log_data
+        JOIN employees ON log_data.record_id = employees.id
+        WHERE log_data.column_name = 'salary' AND log_data.updated_at >= NOW() - INTERVAL 5 SECOND
+    `
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Lỗi truy vấn:', err)
+      return
+    }
+
+    results.forEach((row) => {
+      sendEmail(row.email, row.old_value, row.new_value)
+    })
+  })
+})
+
+console.log('Cron job đang chạy...')
+```
+
+- node-cron chạy mỗi 5 giây (_/5 _ \* \* \* \*).
+- Truy vấn log_data kiểm tra thay đổi trong 5 giây gần nhất.
+- Liên kết với bảng employees để lấy email nhân viên.
+- Gửi email bằng nodemailer khi có thay đổi lương.
+
+  > Note: Ở ví dụ này mình có sử dụng nodemailer để thực hiện gửi email theo format có sẵn, các bạn có thể tham khảo các cài đặt và cấu hình ở [đây](https://www.nodemailer.com/)
+
+- Sau khi cài đặt và hoàn thành cấu hình, hãy chạy **node script.js** để thực thi đoạn code hoặc tuỳ vào stack mà bạn sử dụng để thực thi việc chạy cron job.
+
+# Kết luận.
+
+Như vậy, sau khi đọc xong bài viết này mình tin các bạn cũng đã có được thêm một vài kiến thức về cron job trong lập trình nói chung và về thao tác với cron job nói riêng. Tuy phương pháp nào cũng tiềm ẩn những bất cập nhưng chỉ khi chúng ta thực sự gặp phải bài toán cần giải quyết thì chúng ta mới có thể sử dụng kỹ năng tìm kiếm, nghiên cứu của mình để tìm đáp án cho bài toán đó. Vậy nên, mình hi vọng các bạn sẽ từ những bài viết cơ bản này, hãy tìm hiểu sâu thêm về các trường hợp khác hoặc các phương án khác tối ưu hơn cho bài toàn của mình hiện tại và sau này. Cảm ơn các bạn đã dành thời gian đọc bài viết của mình!
