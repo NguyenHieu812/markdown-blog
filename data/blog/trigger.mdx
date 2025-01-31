@@ -1,0 +1,129 @@
+---
+title: 'Trigger - Khái niệm và Ví dụ'
+date: '2025-01-31'
+lastmod: '2025-01-31'
+tags: ['sql', 'guide', 'trigger', 'blog']
+draft: false
+summary: 'Nếu bạn đã nghe về Trigger nhiều mà vẫn chưa biết cách dùng hoặc đang muốn tìm hiểu về nó, thì hôm nay, hãy để mình giúp các bạn hiểu rõ hơn về khái niệm **Trigger**.'
+---
+
+## Giới thiệu
+
+Khi thao tác với cơ sở dữ liệu, có nhiều trường hợp cần **tự động hóa** một sự kiện hoặc theo dõi một sự thay đổi để kích hoạt một hành động khác. **Trigger** được tạo ra để đảm nhận công việc này.
+
+## Trigger là gì?
+
+Trigger là một **đối tượng trong cơ sở dữ liệu**, hoạt động như một thủ tục được thực thi tự động khi một sự kiện cụ thể xảy ra trên một bảng. Trigger thường được sử dụng để:
+
+- **Duy trì tính toàn vẹn dữ liệu**
+- **Kiểm tra ràng buộc**
+- **Thực hiện các thao tác tự động** khi có thay đổi trong bảng dữ liệu
+
+## Phân loại Trigger
+
+Có hai loại Trigger phổ biến:
+
+- **BEFORE Trigger**: Kích hoạt **trước** khi sự kiện xảy ra.
+- **AFTER Trigger**: Kích hoạt **sau** khi sự kiện xảy ra.
+
+Ngoài ra, một số hệ quản trị CSDL như **SQL Server** còn có **INSTEAD OF Trigger**, giúp thay thế thao tác `INSERT`, `UPDATE` hoặc `DELETE`.
+
+## Ví dụ về Trigger
+
+### Ví dụ 1: Kiểm tra dữ liệu trước khi chèn (`BEFORE INSERT`)
+
+Giả sử ta có bảng `Customer` và cần kiểm tra tuổi khách hàng phải **lớn hơn 18** thì mới được thêm vào:
+
+```sql
+CREATE TRIGGER before_insert_customer
+BEFORE INSERT ON Customer
+FOR EACH ROW
+BEGIN
+    IF NEW.age < 18 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Tuổi khách hàng không được dưới 18';
+    END IF;
+END;
+```
+
+**Giải thích:**
+
+- `BEFORE INSERT ON Customer`: Kích hoạt trước khi có một bản ghi mới được chèn vào bảng `Customer`.
+- `NEW.age`: Giá trị tuổi của khách hàng.
+- `SIGNAL SQLSTATE '45000'`: Báo lỗi nếu điều kiện không thỏa mãn.
+
+### Ví dụ 2: Ghi log thay đổi dữ liệu (`AFTER UPDATE`)
+
+Ví dụ này giúp theo dõi sự thay đổi dữ liệu trong bảng `Employees` bằng cách lưu lại lịch sử cập nhật vào bảng `log_data`.
+
+#### Tạo bảng log dữ liệu:
+
+```sql
+CREATE TABLE log_data (
+    log_id INT AUTO_INCREMENT PRIMARY KEY,
+    table_name VARCHAR(50),
+    record_id INT,
+    column_name VARCHAR(50),
+    old_value TEXT,
+    new_value TEXT,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### Tạo bảng `Employees`:
+
+```sql
+CREATE TABLE employees (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    salary DECIMAL(10,2),
+    department VARCHAR(50)
+);
+```
+
+#### Tạo Trigger theo dõi thay đổi dữ liệu:
+
+```sql
+CREATE TRIGGER after_employee_update
+AFTER UPDATE ON employees
+FOR EACH ROW
+BEGIN
+    -- Ghi lại thay đổi của cột name
+    IF OLD.name <> NEW.name THEN
+        INSERT INTO log_data (table_name, record_id, column_name, old_value, new_value, updated_at)
+        VALUES ('employees', OLD.id, 'name', OLD.name, NEW.name, NOW());
+    END IF;
+
+    -- Ghi lại thay đổi của cột salary
+    IF OLD.salary <> NEW.salary THEN
+        INSERT INTO log_data (table_name, record_id, column_name, old_value, new_value, updated_at)
+        VALUES ('employees', OLD.id, 'salary', OLD.salary, NEW.salary, NOW());
+    END IF;
+
+    -- Ghi lại thay đổi của cột department
+    IF OLD.department <> NEW.department THEN
+        INSERT INTO log_data (table_name, record_id, column_name, old_value, new_value, updated_at)
+        VALUES ('employees', OLD.id, 'department', OLD.department, NEW.department, NOW());
+    END IF;
+END;
+```
+
+### Giải thích:
+
+- `AFTER UPDATE`: Trigger chạy sau khi cập nhật dữ liệu.
+- `FOR EACH ROW`: Mỗi bản ghi được cập nhật sẽ kích hoạt trigger.
+- `OLD` & `NEW`:
+  - `OLD.column_name`: Giá trị trước khi cập nhật.
+  - `NEW.column_name`: Giá trị sau khi cập nhật.
+- **Điều kiện kiểm tra thay đổi dữ liệu**:
+  - Nếu giá trị thay đổi (`IF OLD.value <> NEW.value`) thì mới ghi log để tránh lãng phí tài nguyên.
+
+Sau khi tạo thành công Trigger, bạn có thể thử cập nhật dữ liệu trong bảng `Employees` và kiểm tra bảng `log_data` để xem log thay đổi.
+
+> Note: Hệ quản trị cơ sở dữ liệu khác nhau có thể có cách sử dụng Trigger khác nhau, bạn nên tham khảo tài liệu chính thức của hệ quản trị CSDL mà bạn đang sử dụng.
+
+## Kết luận
+
+Bài viết này giúp bạn hiểu rõ hơn về **Trigger**, cách sử dụng nó trong CSDL, và cung cấp các ví dụ thực tế. Nếu bạn muốn tìm hiểu sâu hơn, hãy tham khảo thêm tài liệu trên internet hoặc liên hệ mình qua email: [tronghieu12802@gmail.com](mailto:tronghieu12802@gmail.com).
+
+Cảm ơn bạn đã dành thời gian đọc bài viết! 🚀
